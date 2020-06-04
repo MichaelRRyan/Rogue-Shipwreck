@@ -1,0 +1,203 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://Scripts/Game.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/Level.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Sprites/Darkness.png" type="Texture" id=4]
+[ext_resource path="res://Font/Modeseven.ttf" type="DynamicFontData" id=5]
+[ext_resource path="res://Scenes/Button.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Scenes/PauseMenu.tscn" type="PackedScene" id=7]
+
+[sub_resource type="TileSet" id=1]
+0/name = "Darkness.png 0"
+0/texture = ExtResource( 4 )
+0/tex_offset = Vector2( 0, 0 )
+0/modulate = Color( 1, 1, 1, 1 )
+0/region = Rect2( 0, 0, 16, 16 )
+0/tile_mode = 0
+0/occluder_offset = Vector2( 0, 0 )
+0/navigation_offset = Vector2( 0, 0 )
+0/shapes = [  ]
+0/z_index = 0
+
+[sub_resource type="DynamicFont" id=2]
+size = 37
+font_data = ExtResource( 5 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 29
+font_data = ExtResource( 5 )
+
+[node name="Game" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="Level" parent="." instance=ExtResource( 2 )]
+
+[node name="Player" parent="." instance=ExtResource( 3 )]
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+position = Vector2( 8, 8 )
+current = true
+zoom = Vector2( 0.2, 0.2 )
+drag_margin_left = 0.0
+drag_margin_top = 0.0
+drag_margin_right = 0.0
+drag_margin_bottom = 0.0
+
+[node name="VisibilityMap" type="TileMap" parent="."]
+tile_set = SubResource( 1 )
+cell_size = Vector2( 16, 16 )
+format = 1
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="TopBar" type="ColorRect" parent="CanvasLayer"]
+margin_right = 1254.0
+margin_bottom = 60.0
+color = Color( 0.364706, 0.243137, 0.32549, 1 )
+
+[node name="HP" type="Label" parent="CanvasLayer"]
+margin_left = 408.854
+margin_right = 496.854
+margin_bottom = 60.0
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 0.933333, 0.764706, 0.603922, 1 )
+text = "HP: "
+align = 1
+valign = 1
+
+[node name="Level" type="Label" parent="CanvasLayer"]
+margin_left = 89.2743
+margin_right = 243.274
+margin_bottom = 60.0
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 0.933333, 0.764706, 0.603922, 1 )
+text = "Level: "
+align = 1
+valign = 1
+
+[node name="Score" type="Label" parent="CanvasLayer"]
+margin_left = 674.951
+margin_top = 1.43195
+margin_right = 828.951
+margin_bottom = 61.4319
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 0.933333, 0.764706, 0.603922, 1 )
+text = "Score: "
+align = 1
+valign = 1
+
+[node name="BottomBar" type="ColorRect" parent="CanvasLayer"]
+anchor_right = 1.0
+margin_top = 540.0
+margin_right = 339.0
+margin_bottom = 600.0
+color = Color( 0.364706, 0.243137, 0.32549, 1 )
+
+[node name="Blindness" type="Label" parent="CanvasLayer/BottomBar"]
+visible = false
+margin_left = 94.8145
+margin_top = -1.49585
+margin_right = 248.814
+margin_bottom = 58.5042
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 0.933333, 0.764706, 0.603922, 1 )
+text = "Blindness"
+align = 1
+valign = 1
+
+[node name="Healing" type="Label" parent="CanvasLayer/BottomBar"]
+visible = false
+margin_left = 408.854
+margin_top = -1.49585
+margin_right = 606.854
+margin_bottom = 58.5042
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 0.933333, 0.764706, 0.603922, 1 )
+text = "Healing"
+align = 1
+valign = 1
+
+[node name="Poisoned" type="Label" parent="CanvasLayer/BottomBar"]
+visible = false
+margin_left = 730.0
+margin_top = -1.49585
+margin_right = 928.0
+margin_bottom = 58.5042
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 0.933333, 0.764706, 0.603922, 1 )
+text = "Poisoned"
+align = 1
+valign = 1
+
+[node name="EndScreen" type="ColorRect" parent="CanvasLayer"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -695.5
+margin_top = -438.0
+margin_right = 695.5
+margin_bottom = 438.0
+rect_pivot_offset = Vector2( 71.108, 300 )
+color = Color( 0.364706, 0.243137, 0.32549, 1 )
+
+[node name="StatusText" type="Label" parent="CanvasLayer/EndScreen"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -152.0
+margin_top = 308.0
+margin_right = 154.0
+margin_bottom = 368.0
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 0.933333, 0.764706, 0.603922, 1 )
+text = "You Won!"
+align = 1
+valign = 1
+
+[node name="Score" type="Label" parent="CanvasLayer/EndScreen"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -77.0
+margin_top = -70.0
+margin_right = 77.0
+margin_bottom = -10.0
+custom_fonts/font = SubResource( 3 )
+custom_colors/font_color = Color( 0.933333, 0.764706, 0.603922, 1 )
+text = "Score: "
+align = 1
+valign = 1
+
+[node name="Button" parent="CanvasLayer/EndScreen" instance=ExtResource( 6 )]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -80.1759
+margin_top = 30.0
+margin_right = 86.8241
+margin_bottom = 99.0
+
+[node name="Exit" parent="CanvasLayer/EndScreen" instance=ExtResource( 6 )]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -80.1759
+margin_top = 121.397
+margin_right = 86.8241
+margin_bottom = 190.397
+text = "Exit"
+
+[node name="PauseMenu" parent="CanvasLayer" instance=ExtResource( 7 )]
+visible = false
+[connection signal="action_taken" from="Player" to="." method="_on_Player_action_taken"]
+[connection signal="died" from="Player" to="." method="_on_Player_died"]
+[connection signal="reached_stairs" from="Player" to="." method="_on_Player_reached_stairs"]
+[connection signal="pressed" from="CanvasLayer/EndScreen/Button" to="." method="_on_Button_pressed"]
+[connection signal="pressed" from="CanvasLayer/EndScreen/Exit" to="." method="_on_Exit_pressed"]
+[connection signal="restarted" from="CanvasLayer/PauseMenu" to="." method="_on_PauseMenu_restarted"]
+[connection signal="unpaused" from="CanvasLayer/PauseMenu" to="." method="_on_PauseMenu_unpaused"]
