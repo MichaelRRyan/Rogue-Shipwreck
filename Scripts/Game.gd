@@ -44,7 +44,7 @@ func _input(event):
 			$CanvasLayer/PauseMenu.appear()
 			return
 		
-		player.handle_input(event)
+		#player.handle_input(event)
 
 func next_level():
 	
@@ -71,7 +71,8 @@ func next_level():
 	
 	for position in enemy_spawns:
 		var enemy = EnemyScene.instance()
-		enemy.init(randi() % 2, position)
+		enemy.init(randi() % 2, position, enemy_pathfinding, player)
+		enemy.connect("died", self, "_on_Enemy_died", [enemy])
 		add_child(enemy)
 		enemies.append(enemy)
 	
@@ -89,18 +90,18 @@ func update_visuals():
 				var x_dir = 1 if x < player.tile.x else -1
 				var y_dir = 1 if y < player.tile.y else -1
 				var test_point = tile_to_pixel_center(x, y) + Vector2(x_dir, y_dir) * TILE_SIZE / 2
-
+	
 				var occlusion = space_state.intersect_ray(player_center, test_point)
 				if !occlusion || (occlusion.position - test_point).length() < 1:
 					visibility_map.set_cell(x, y, -1)
-
+	
 	for enemy in enemies:
 		if !enemy.visible:
 			var enemy_center = tile_to_pixel_center(enemy.tile.x, enemy.tile.y)
 			var occlusion = space_state.intersect_ray(player_center, enemy_center)
 			if !occlusion:
 				enemy.visible = true
-
+	
 	for item in level.items:
 		if !item.visible:
 			var item_center = tile_to_pixel_center(item.tile.x, item.tile.y)
@@ -113,26 +114,6 @@ func update_visuals():
 
 func tile_to_pixel_center(x, y):
 	return Vector2((x + 0.5) * TILE_SIZE, (y + 0.5) * TILE_SIZE)
-
-func _on_Player_action_taken():
-	var removal_queue = []
-	
-	for enemy in enemies:
-		enemy.act(enemy_pathfinding, enemies, player)
-		if enemy.dead:
-			removal_queue.append(enemy)
-			player.score += 10 * enemy.full_hp
-			
-			# Drop items
-			var random = randi() % 3
-			if random > 0:
-				level.add_new_random_item(enemy.tile.x, enemy.tile.y)
-	
-	for enemy in removal_queue:
-		enemies.erase(enemy)
-		enemy.queue_free()
-	
-	call_deferred("update_visuals")
 
 func _on_Player_reached_stairs():
 	level_num += 1
@@ -177,4 +158,18 @@ func _on_PauseMenu_unpaused():
 	game_paused = false
 
 func _on_Exit_pressed():
-	get_tree().change_scene("res://Scenes/TitleScene.tscn")
+	if get_tree().change_scene("res://Scenes/TitleScene.tscn") != OK:
+		print ("An unexpected error occured when trying to switch to the TitleScene scene")
+
+func _on_Player_moved():
+	call_deferred("update_visuals")
+
+func _on_Enemy_died(enemy):
+	enemies.erase(enemy)
+	enemy.queue_free()
+	player.score += 10 * enemy.full_hp
+	
+	# Drop items
+	var random = randi() % 3
+	if random > 0:
+		level.add_new_random_item(enemy.tile.x, enemy.tile.y)

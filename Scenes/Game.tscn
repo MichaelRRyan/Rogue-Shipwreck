@@ -36,7 +36,6 @@ script = ExtResource( 1 )
 [node name="Player" parent="." instance=ExtResource( 3 )]
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
-position = Vector2( 8, 8 )
 current = true
 zoom = Vector2( 0.2, 0.2 )
 drag_margin_left = 0.0
@@ -194,8 +193,8 @@ text = "Exit"
 
 [node name="PauseMenu" parent="CanvasLayer" instance=ExtResource( 7 )]
 visible = false
-[connection signal="action_taken" from="Player" to="." method="_on_Player_action_taken"]
 [connection signal="died" from="Player" to="." method="_on_Player_died"]
+[connection signal="moved" from="Player" to="." method="_on_Player_moved"]
 [connection signal="reached_stairs" from="Player" to="." method="_on_Player_reached_stairs"]
 [connection signal="pressed" from="CanvasLayer/EndScreen/Button" to="." method="_on_Button_pressed"]
 [connection signal="pressed" from="CanvasLayer/EndScreen/Exit" to="." method="_on_Exit_pressed"]

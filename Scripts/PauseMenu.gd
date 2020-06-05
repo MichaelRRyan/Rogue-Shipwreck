@@ -16,4 +16,5 @@ func _on_Restart_pressed():
 	emit_signal("restarted")
 	
 func _on_Exit_pressed():
-	get_tree().change_scene("res://Scenes/TitleScene.tscn")
+	if get_tree().change_scene("res://Scenes/TitleScene.tscn") != OK:
+		print ("An unexpected error occured when trying to switch to the TitleScene scene")
