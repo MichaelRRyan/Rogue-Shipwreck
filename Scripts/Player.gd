@@ -47,12 +47,12 @@ func restart():
 # -------------------------------------------------------------
 func set_tile(tile_pos):
 	tile = tile_pos
-	position = tile * 16
+	position = tile * 16 + Vector2(8, 8)
 
 # -------------------------------------------------------------
 func _input(event):
 	if event.is_action_pressed("mouse_click"):
-		var overlapping_bodies = $Area2D.get_overlapping_bodies()
+		var overlapping_bodies = $Sprite/AttackArea.get_overlapping_bodies()
 		if overlapping_bodies:
 			for body in overlapping_bodies:
 				if body != self:
@@ -60,7 +60,7 @@ func _input(event):
 						body.take_damage(1)
 
 # -------------------------------------------------------------
-func _physics_process(_delta):
+func _physics_process(delta):
 	var speed = 150
 	var velocity = Vector2.ZERO
 
@@ -80,24 +80,24 @@ func _physics_process(_delta):
 		
 		emit_signal("moved")
 		
-	look_at(get_global_mouse_position())
+	$Sprite.look_at(get_global_mouse_position())
 	
 	if impaired_turns > 0:
-		impaired_turns -= 1
-		if impaired_turns == 0:
+		impaired_turns -= delta
+		if impaired_turns <= 0:
 			status_bar_ref.get_node("Blindness").visible = false
 			$Impairment.visible = false
 
 	if healing_turns > 0:
-		healing_turns -= 1
-		hp += 2
-		if healing_turns == 0:
+		healing_turns -= delta
+		hp += 2 * delta
+		if healing_turns <= 0:
 			status_bar_ref.get_node("Healing").visible = false
 
 	if poison_turns > 0:
-		poison_turns -= 1
-		damage(1)
-		if poison_turns == 0:
+		poison_turns -= delta
+		damage(1 * delta)
+		if poison_turns <= 0:
 			status_bar_ref.get_node("Poisoned").visible = false
 	
 	check_level_collisions()

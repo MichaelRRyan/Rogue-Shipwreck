@@ -21,6 +21,7 @@ const EnemyScene = preload("res://Scenes/Enemy.tscn")
 var level_num = 0
 var enemies = []
 var enemy_pathfinding
+var level_generated = false
 
 # Node refs ---------------------------------------------------
 
@@ -43,10 +44,14 @@ func _input(event):
 			game_paused = true
 			$CanvasLayer/PauseMenu.appear()
 			return
-		
-		#player.handle_input(event)
+
+func _process(_delta):
+	$CanvasLayer/HP.text = "HP: " + str(round(player.hp))
+	$CanvasLayer/Score.text = "Score: " + str(player.score)
 
 func next_level():
+	
+	level_generated = false
 	
 	# Build a new level
 	level.build_level(LEVEL_SIZES[level_num], LEVEL_ROOM_COUNTS[level_num], LEVEL_ENEMY_COUNTS[level_num], LEVEL_ITEM_COUNTS[level_num])
@@ -78,10 +83,18 @@ func next_level():
 	
 	$CanvasLayer/Level.text = "Level: " + str(level_num)
 	
+	#call_deferred("level_generated_true")
+	level_generated = true
+	
 	call_deferred("update_visuals")
 
+func level_generated_true():
+	level_generated = true
+
 func update_visuals():
-	
+	if !level_generated:
+		return
+		
 	var player_center = tile_to_pixel_center(player.tile.x, player.tile.y)
 	var space_state = get_world_2d().direct_space_state
 	for x in range(level.level_size.x):
@@ -108,9 +121,6 @@ func update_visuals():
 			var occlusion = space_state.intersect_ray(player_center, item_center)
 			if !occlusion:
 				item.visible = true
-	
-	$CanvasLayer/HP.text = "HP: " + str(player.hp)
-	$CanvasLayer/Score.text = "Score: " + str(player.score)
 
 func tile_to_pixel_center(x, y):
 	return Vector2((x + 0.5) * TILE_SIZE, (y + 0.5) * TILE_SIZE)

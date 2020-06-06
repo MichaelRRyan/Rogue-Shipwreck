@@ -28,7 +28,6 @@ var enemy_pathfinding
 func build_level(size, room_count, enemy_count, item_count):
 	
 	# Reset the map and collections
-	
 	rooms.clear()
 	map.clear()
 	tile_map.clear()
