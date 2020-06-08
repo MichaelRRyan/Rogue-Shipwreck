@@ -1,6 +1,6 @@
 extends Node2D
 
-const TILE_SIZE = 16
+const TILE_SIZE = 32
 
 const MIN_ROOM_DIMENSION = 5
 const MAX_ROOM_DIMENSION = 8

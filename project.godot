@@ -22,7 +22,7 @@ _global_script_class_icons={
 
 config/name="RogueShipwreck"
 run/main_scene="res://Scenes/LicenceScene.tscn"
-config/icon="res://Sprites/Player.png"
+config/icon="res://Sprites/player.png"
 
 [display]
 
@@ -70,4 +70,5 @@ mouse_click={
 
 [rendering]
 
+environment/default_clear_color=Color( 0.133333, 0.12549, 0.203922, 1 )
 environment/default_environment="res://default_env.tres"

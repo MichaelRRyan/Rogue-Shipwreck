@@ -1,6 +1,6 @@
 extends Node2D
 
-const TILE_SIZE = 16
+const TILE_SIZE = 32
 
 const LEVEL_SIZES = [
 	Vector2(30, 30),
@@ -95,7 +95,7 @@ func update_visuals():
 	if !level_generated:
 		return
 		
-	var radiusSquared = 50
+	var radiusSquared = 80
 		
 	var player_center = tile_to_pixel_center(player.tile.x, player.tile.y)
 	var space_state = get_world_2d().direct_space_state

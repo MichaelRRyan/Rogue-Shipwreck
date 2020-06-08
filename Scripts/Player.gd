@@ -4,6 +4,7 @@ signal moved
 signal reached_stairs
 signal died
 
+const TILE_SIZE = 32
 const START_HP = 5
 
 var tile
@@ -12,6 +13,9 @@ var enemies_ref
 var status_bar_ref
 var hp = START_HP
 var score = 0
+
+var attack_cooldown = 0
+const SWORD_COOLDOWN = 0.5
 
 # Temp
 const POTION_FUNCTIONS = ["impair_vision", "heal_over_time", "poison"]
@@ -47,20 +51,37 @@ func restart():
 # -------------------------------------------------------------
 func set_tile(tile_pos):
 	tile = tile_pos
-	position = tile * 16 + Vector2(8, 8)
+	position = tile * TILE_SIZE + Vector2(16, 16)
 
 # -------------------------------------------------------------
 func _input(event):
 	if event.is_action_pressed("mouse_click"):
-		var overlapping_bodies = $Sprite/AttackArea.get_overlapping_bodies()
-		if overlapping_bodies:
-			for body in overlapping_bodies:
-				if body != self:
-					if body.is_in_group("Enemy"):
-						body.take_damage(1)
+		var mouse_tile = Vector2(int(get_global_mouse_position().x / TILE_SIZE), int(get_global_mouse_position().y / TILE_SIZE))
+		if level_ref.get_tile(mouse_tile.x, mouse_tile.y) == TileType.Door:
+			level_ref.set_tile(mouse_tile.x, mouse_tile.y, TileType.Ground)
+			
+		elif attack_cooldown == 0:
+			attack_cooldown = SWORD_COOLDOWN
+			$CooldownBar.rect_size.x = TILE_SIZE * attack_cooldown / SWORD_COOLDOWN
+			$CooldownBar.visible = true
+			
+			var overlapping_bodies = $Arrow/AttackArea.get_overlapping_bodies()
+			if overlapping_bodies:
+				for body in overlapping_bodies:
+					if body != self:
+						if body.is_in_group("Enemy"):
+							body.take_damage(1)
 
 # -------------------------------------------------------------
 func _physics_process(delta):
+	
+	if attack_cooldown > 0:
+		attack_cooldown -= delta
+		$CooldownBar.rect_size.x = TILE_SIZE * attack_cooldown / SWORD_COOLDOWN
+		if attack_cooldown < 0:
+			attack_cooldown = 0
+			$CooldownBar.visible = false
+	
 	var speed = 150
 	var velocity = Vector2.ZERO
 
@@ -80,7 +101,7 @@ func _physics_process(delta):
 		
 		emit_signal("moved")
 		
-	$Sprite.look_at(get_global_mouse_position())
+	$Arrow.look_at(get_global_mouse_position())
 	
 	if impaired_turns > 0:
 		impaired_turns -= delta
@@ -104,7 +125,7 @@ func _physics_process(delta):
 
 # -------------------------------------------------------------
 func check_level_collisions():
-	tile = Vector2(int(position.x / 16), int(position.y / 16))
+	tile = Vector2(int(position.x / TILE_SIZE), int(position.y / TILE_SIZE))
 	var x = tile.x
 	var y = tile.y
 
@@ -119,11 +140,6 @@ func check_level_collisions():
 
 		TileType.Stairs:
 			emit_signal("reached_stairs")
-
-	if Input.is_action_just_pressed("mouse_click"):
-		var mouse_tile = Vector2(int(get_global_mouse_position().x / 16), int(get_global_mouse_position().y / 16))
-		if level_ref.get_tile(mouse_tile.x, mouse_tile.y) == TileType.Door:
-			level_ref.set_tile(mouse_tile.x, mouse_tile.y, TileType.Ground)
 
 # -------------------------------------------------------------
 func pickup_items():
@@ -140,12 +156,13 @@ func pickup_items():
 # -------------------------------------------------------------
 func damage(dmg):
 	hp = max(0, hp - dmg)
-	if hp == 0:
+	$HitEffect.emitting = true
+	if round(hp) == 0:
 		emit_signal("died")
 
 # -------------------------------------------------------------
 func impair_vision():
-	impaired_turns = 10
+	impaired_turns = 5
 	status_bar_ref.get_node("Blindness").visible = true
 	$Impairment.visible = true
 
