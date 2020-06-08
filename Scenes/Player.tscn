@@ -3,7 +3,7 @@
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=1]
 [ext_resource path="res://Sprites/player.png" type="Texture" id=2]
 [ext_resource path="res://Sprites/impairment.png" type="Texture" id=3]
-[ext_resource path="res://Sprites/arrow.png" type="Texture" id=4]
+[ext_resource path="res://Sprites/attack.png" type="Texture" id=4]
 [ext_resource path="res://Scenes/HitEffect.tscn" type="PackedScene" id=5]
 
 [sub_resource type="CircleShape2D" id=1]
@@ -25,21 +25,16 @@ texture = ExtResource( 3 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
 
-[node name="Arrow" type="Sprite" parent="."]
+[node name="Attack" type="Sprite" parent="."]
+visible = false
 texture = ExtResource( 4 )
+offset = Vector2( 9, 0 )
+hframes = 5
 
-[node name="AttackArea" type="Area2D" parent="Arrow"]
+[node name="AttackArea" type="Area2D" parent="Attack"]
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Arrow/AttackArea"]
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Attack/AttackArea"]
 position = Vector2( 12, 0 )
 shape = SubResource( 2 )
-
-[node name="CooldownBar" type="ColorRect" parent="."]
-visible = false
-margin_left = -16.0
-margin_top = 16.0
-margin_right = 16.0
-margin_bottom = 20.0
-color = Color( 0.152941, 0.223529, 0.972549, 1 )
 
 [node name="HitEffect" parent="." instance=ExtResource( 5 )]

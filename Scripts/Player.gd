@@ -62,10 +62,9 @@ func _input(event):
 			
 		elif attack_cooldown == 0:
 			attack_cooldown = SWORD_COOLDOWN
-			$CooldownBar.rect_size.x = TILE_SIZE * attack_cooldown / SWORD_COOLDOWN
-			$CooldownBar.visible = true
+			$Attack.visible = true
 			
-			var overlapping_bodies = $Arrow/AttackArea.get_overlapping_bodies()
+			var overlapping_bodies = $Attack/AttackArea.get_overlapping_bodies()
 			if overlapping_bodies:
 				for body in overlapping_bodies:
 					if body != self:
@@ -77,10 +76,10 @@ func _physics_process(delta):
 	
 	if attack_cooldown > 0:
 		attack_cooldown -= delta
-		$CooldownBar.rect_size.x = TILE_SIZE * attack_cooldown / SWORD_COOLDOWN
+		$Attack.frame = int($Attack.hframes * (1 - attack_cooldown / SWORD_COOLDOWN))
 		if attack_cooldown < 0:
 			attack_cooldown = 0
-			$CooldownBar.visible = false
+			$Attack.visible = false
 	
 	var speed = 150
 	var velocity = Vector2.ZERO
@@ -101,7 +100,7 @@ func _physics_process(delta):
 		
 		emit_signal("moved")
 		
-	$Arrow.look_at(get_global_mouse_position())
+	$Attack.look_at(get_global_mouse_position())
 	
 	if impaired_turns > 0:
 		impaired_turns -= delta

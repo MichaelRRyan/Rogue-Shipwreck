@@ -131,18 +131,19 @@ func tile_to_pixel_center(x, y):
 	return Vector2((x + 0.5) * TILE_SIZE, (y + 0.5) * TILE_SIZE)
 
 func _on_Player_reached_stairs():
-	level_num += 1
-	player.score += 20
+	if !game_paused:
+		level_num += 1
+		player.score += 20
 	
-	if level_num < LEVEL_SIZES.size():
-		next_level()
-	else:
-		player.score += 1000
-		$CanvasLayer/EndScreen.visible = true
-		$CanvasLayer/EndScreen/Score.text = "Score: " + str(player.score)
-		$CanvasLayer/EndScreen/StatusText.text = "You Won!"
-		$CanvasLayer/EndScreen/Button.grab_focus()
-		game_paused = true
+		if level_num < LEVEL_SIZES.size():
+			next_level()
+		else:
+			player.score += 1000
+			$CanvasLayer/EndScreen.visible = true
+			$CanvasLayer/EndScreen/Score.text = "Score: " + str(player.score)
+			$CanvasLayer/EndScreen/StatusText.text = "You Won!"
+			$CanvasLayer/EndScreen/Button.grab_focus()
+			game_paused = true
 
 func restart_game():
 	level_num = 0
