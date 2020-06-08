@@ -17,7 +17,7 @@ func init(enemy_level, tile_pos, pathfinding, player):
 		hp = full_hp
 		tile = tile_pos
 		$Sprite.frame = enemy_level
-		position = tile * 16
+		position = tile * 16 + Vector2(8, 8)
 		pathfinding_ref = pathfinding
 		player_ref = player
 

@@ -83,8 +83,8 @@ func next_level():
 	
 	$CanvasLayer/Level.text = "Level: " + str(level_num)
 	
-	#call_deferred("level_generated_true")
-	level_generated = true
+	call_deferred("level_generated_true")
+	#level_generated = true
 	
 	call_deferred("update_visuals")
 
@@ -95,32 +95,37 @@ func update_visuals():
 	if !level_generated:
 		return
 		
+	var radiusSquared = 50
+		
 	var player_center = tile_to_pixel_center(player.tile.x, player.tile.y)
 	var space_state = get_world_2d().direct_space_state
 	for x in range(level.level_size.x):
 		for y in range(level.level_size.y):
 			if visibility_map.get_cell(x, y) == 0:
-				var x_dir = 1 if x < player.tile.x else -1
-				var y_dir = 1 if y < player.tile.y else -1
-				var test_point = tile_to_pixel_center(x, y) + Vector2(x_dir, y_dir) * TILE_SIZE / 2
+				if (Vector2(x, y) - player.tile).length_squared() < radiusSquared:
+					var x_dir = 1 if x < player.tile.x else -1
+					var y_dir = 1 if y < player.tile.y else -1
+					var test_point = tile_to_pixel_center(x, y) + Vector2(x_dir, y_dir) * TILE_SIZE / 2
 	
-				var occlusion = space_state.intersect_ray(player_center, test_point)
-				if !occlusion || (occlusion.position - test_point).length() < 1:
-					visibility_map.set_cell(x, y, -1)
+					var occlusion = space_state.intersect_ray(player_center, test_point, enemies)
+					if !occlusion || (occlusion.position - test_point).length() < 1:
+						visibility_map.set_cell(x, y, -1)
 	
 	for enemy in enemies:
 		if !enemy.visible:
-			var enemy_center = tile_to_pixel_center(enemy.tile.x, enemy.tile.y)
-			var occlusion = space_state.intersect_ray(player_center, enemy_center)
-			if !occlusion:
-				enemy.visible = true
+			if (enemy.tile - player.tile).length_squared() < radiusSquared:
+				var enemy_center = tile_to_pixel_center(enemy.tile.x, enemy.tile.y)
+				var occlusion = space_state.intersect_ray(player_center, enemy_center, enemies)
+				if !occlusion:
+					enemy.visible = true
 	
 	for item in level.items:
 		if !item.visible:
-			var item_center = tile_to_pixel_center(item.tile.x, item.tile.y)
-			var occlusion = space_state.intersect_ray(player_center, item_center)
-			if !occlusion:
-				item.visible = true
+			if (item.tile - player.tile).length_squared() < radiusSquared:
+				var item_center = tile_to_pixel_center(item.tile.x, item.tile.y)
+				var occlusion = space_state.intersect_ray(player_center, item_center)
+				if !occlusion:
+					item.visible = true
 
 func tile_to_pixel_center(x, y):
 	return Vector2((x + 0.5) * TILE_SIZE, (y + 0.5) * TILE_SIZE)
