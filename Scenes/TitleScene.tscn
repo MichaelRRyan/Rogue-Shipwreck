@@ -28,7 +28,7 @@ margin_right = 513.0
 margin_bottom = 34.7723
 custom_fonts/font = SubResource( 1 )
 custom_colors/font_color = Color( 0.933333, 0.764706, 0.603922, 1 )
-text = "1-Bit Dungeon"
+text = "The Revenge of Lyssa"
 align = 1
 valign = 1
 

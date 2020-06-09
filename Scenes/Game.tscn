@@ -53,7 +53,7 @@ format = 1
 [node name="TopBar" type="ColorRect" parent="CanvasLayer"]
 margin_right = 1254.0
 margin_bottom = 60.0
-color = Color( 0.364706, 0.243137, 0.32549, 1 )
+color = Color( 0.133333, 0.12549, 0.203922, 0.607843 )
 
 [node name="HP" type="Label" parent="CanvasLayer"]
 margin_left = 408.854
@@ -91,7 +91,7 @@ anchor_right = 1.0
 margin_top = 540.0
 margin_right = 339.0
 margin_bottom = 600.0
-color = Color( 0.364706, 0.243137, 0.32549, 1 )
+color = Color( 0.133333, 0.12549, 0.203922, 0.607843 )
 
 [node name="Blindness" type="Label" parent="CanvasLayer/BottomBar"]
 visible = false
@@ -140,7 +140,7 @@ margin_top = -438.0
 margin_right = 695.5
 margin_bottom = 438.0
 rect_pivot_offset = Vector2( 71.108, 300 )
-color = Color( 0.364706, 0.243137, 0.32549, 1 )
+color = Color( 0.133333, 0.12549, 0.203922, 1 )
 
 [node name="StatusText" type="Label" parent="CanvasLayer/EndScreen"]
 anchor_left = 0.5
