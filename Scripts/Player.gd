@@ -76,10 +76,11 @@ func _physics_process(delta):
 	
 	if attack_cooldown > 0:
 		attack_cooldown -= delta
-		$Attack.frame = int($Attack.hframes * (1 - attack_cooldown / SWORD_COOLDOWN))
 		if attack_cooldown < 0:
 			attack_cooldown = 0
 			$Attack.visible = false
+		else:
+			$Attack.frame = int($Attack.hframes * (1 - attack_cooldown / SWORD_COOLDOWN))
 	
 	var speed = 150
 	var velocity = Vector2.ZERO

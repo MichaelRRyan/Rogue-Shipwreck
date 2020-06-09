@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Scripts/Game.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Level.tscn" type="PackedScene" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://Font/Modeseven.ttf" type="DynamicFontData" id=5]
 [ext_resource path="res://Scenes/Button.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Scenes/PauseMenu.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Music/menu.ogg" type="AudioStream" id=8]
 
 [sub_resource type="TileSet" id=1]
 0/name = "darkness.png 0"
@@ -193,6 +194,9 @@ text = "Exit"
 
 [node name="PauseMenu" parent="CanvasLayer" instance=ExtResource( 7 )]
 visible = false
+
+[node name="MusicPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
 [connection signal="died" from="Player" to="." method="_on_Player_died"]
 [connection signal="moved" from="Player" to="." method="_on_Player_moved"]
 [connection signal="reached_stairs" from="Player" to="." method="_on_Player_reached_stairs"]

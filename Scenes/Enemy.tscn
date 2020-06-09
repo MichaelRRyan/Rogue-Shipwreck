@@ -1,10 +1,25 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Scripts/Enemy.gd" type="Script" id=1]
-[ext_resource path="res://Sprites/enemy.png" type="Texture" id=2]
-[ext_resource path="res://Scenes/HitEffect.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Sprites/zombie_1.png" type="Texture" id=2]
+[ext_resource path="res://Sprites/zombie_2.png" type="Texture" id=3]
+[ext_resource path="res://Sprites/zombie_3.png" type="Texture" id=4]
+[ext_resource path="res://Sprites/zombie_4.png" type="Texture" id=5]
+[ext_resource path="res://Sprites/zombie_5.png" type="Texture" id=6]
+[ext_resource path="res://Sprites/zombie_6.png" type="Texture" id=7]
+[ext_resource path="res://Sprites/zombie_7.png" type="Texture" id=8]
+[ext_resource path="res://Sprites/zombie_8.png" type="Texture" id=9]
+[ext_resource path="res://Scenes/HitEffect.tscn" type="PackedScene" id=10]
 
-[sub_resource type="CircleShape2D" id=1]
+[sub_resource type="SpriteFrames" id=3]
+animations = [ {
+"frames": [ ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="CircleShape2D" id=2]
 radius = 12.0
 
 [node name="Enemy" type="KinematicBody2D" groups=[
@@ -13,18 +28,19 @@ radius = 12.0
 visible = false
 script = ExtResource( 1 )
 
-[node name="Sprite" type="Sprite" parent="."]
-texture = ExtResource( 2 )
-hframes = 2
+[node name="Sprite" type="AnimatedSprite" parent="."]
+frames = SubResource( 3 )
+frame = 6
+playing = true
 
 [node name="HPBar" type="ColorRect" parent="."]
-margin_left = -8.0
+margin_left = -16.0
 margin_top = 16.0
-margin_right = 8.0
+margin_right = 16.0
 margin_bottom = 18.0
 color = Color( 0.937255, 0.2, 0.2, 1 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource( 1 )
+shape = SubResource( 2 )
 
-[node name="HitEffect" parent="." instance=ExtResource( 3 )]
+[node name="HitEffect" parent="." instance=ExtResource( 10 )]

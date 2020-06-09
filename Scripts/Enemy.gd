@@ -20,7 +20,7 @@ func init(enemy_level, tile_pos, pathfinding, player):
 		full_hp = 1 + enemy_level * 2
 		hp = full_hp
 		tile = tile_pos
-		$Sprite.frame = enemy_level
+		#$Sprite.frame = enemy_level
 		position = tile * TILE_SIZE + Vector2(16, 16)
 		pathfinding_ref = pathfinding
 		player_ref = player
@@ -54,6 +54,12 @@ func _physics_process(delta):
 		if path.size() > 2:
 			var target_point = Vector2(path[1].x * TILE_SIZE, path[1].y * TILE_SIZE) + Vector2(16, 16)
 			var velocity = (target_point - position).normalized() * 80
+			
+			if velocity.x < 0:
+				$Sprite.flip_h = true
+			else:
+				$Sprite.flip_h = false
+			
 			velocity = move_and_slide(velocity)
 			tile = Vector2(int(position.x / TILE_SIZE), int(position.y / TILE_SIZE))
 			

@@ -37,6 +37,7 @@ func _ready():
 	randomize() # Randomize the random seed
 	next_level() # Start the first level
 	player.init(level, enemies, $CanvasLayer/BottomBar) # Initialise the player with a reference to the level
+	$MusicPlayer.play()
 
 func _input(event):
 	if !game_paused:

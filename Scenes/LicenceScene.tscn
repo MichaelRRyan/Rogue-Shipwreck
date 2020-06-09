@@ -1,14 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Scripts/LicenceScene.gd" type="Script" id=1]
 [ext_resource path="res://Font/Modeseven.ttf" type="DynamicFontData" id=2]
 
 [sub_resource type="DynamicFont" id=1]
 size = 42
-font_data = ExtResource( 2 )
-
-[sub_resource type="DynamicFont" id=2]
-size = 34
 font_data = ExtResource( 2 )
 
 [node name="LicenceScene" type="Control"]
@@ -24,28 +20,17 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -399.5
-margin_top = -102.5
+margin_top = -155.555
 margin_right = 407.5
-margin_bottom = 46.5
+margin_bottom = 163.445
 custom_fonts/font = SubResource( 1 )
 custom_colors/font_color = Color( 0.933333, 0.764706, 0.603922, 1 )
 text = "A Game By
 
-Michael Rainsford Ryan"
+Michael Rainsford Ryan,
+
+Zikenn
+
+and Michael Macapagal"
 align = 1
 valign = 1
-
-[node name="Credit2" type="Label" parent="."]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -406.0
-margin_top = 127.26
-margin_right = 401.0
-margin_bottom = 221.26
-custom_fonts/font = SubResource( 2 )
-custom_colors/font_color = Color( 0.933333, 0.764706, 0.603922, 1 )
-text = "With art by: Chicken
-and Music by Mikey"
-align = 1
