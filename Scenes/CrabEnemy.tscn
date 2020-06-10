@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Scripts/CrabEnemy.gd" type="Script" id=1]
+[ext_resource path="res://Sprites/crab.png" type="Texture" id=2]
+[ext_resource path="res://Scenes/HitEffect.tscn" type="PackedScene" id=3]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 6.0
+
+[node name="CrabEnemy" type="KinematicBody2D" groups=[
+"Enemy",
+]]
+visible = false
+script = ExtResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 0.565617, -1.69685 )
+texture = ExtResource( 2 )
+
+[node name="HPBar" type="ColorRect" parent="."]
+margin_left = -16.0
+margin_top = 7.18
+margin_right = 16.0
+margin_bottom = 10.18
+color = Color( 0.929412, 0.0901961, 0.0901961, 1 )
+
+[node name="HitEffect" parent="." instance=ExtResource( 3 )]

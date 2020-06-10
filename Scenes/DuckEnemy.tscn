@@ -1,0 +1,47 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://Scripts/DuckEnemy.gd" type="Script" id=1]
+[ext_resource path="res://Sprites/duck_2.png" type="Texture" id=2]
+[ext_resource path="res://Sprites/duck_3.png" type="Texture" id=3]
+[ext_resource path="res://Sprites/duck_4.png" type="Texture" id=4]
+[ext_resource path="res://Sprites/duck_5.png" type="Texture" id=5]
+[ext_resource path="res://Sprites/duck_6.png" type="Texture" id=6]
+[ext_resource path="res://Sprites/duck_7.png" type="Texture" id=7]
+[ext_resource path="res://Sprites/duck_8.png" type="Texture" id=8]
+[ext_resource path="res://Sprites/duck_9.png" type="Texture" id=9]
+[ext_resource path="res://Scenes/HitEffect.tscn" type="PackedScene" id=10]
+
+[sub_resource type="CircleShape2D" id=3]
+radius = 12.0
+
+[sub_resource type="SpriteFrames" id=2]
+animations = [ {
+"frames": [ ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[node name="DuckEnemy" type="KinematicBody2D" groups=[
+"Enemy",
+]]
+visible = false
+script = ExtResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 3 )
+
+[node name="Sprite" type="AnimatedSprite" parent="."]
+position = Vector2( 0.12851, -5.14048 )
+frames = SubResource( 2 )
+frame = 7
+playing = true
+
+[node name="HPBar" type="ColorRect" parent="."]
+margin_left = -16.0
+margin_top = 21.0
+margin_right = 16.0
+margin_bottom = 25.0
+color = Color( 0.898039, 0.180392, 0.180392, 1 )
+
+[node name="HitEffect" parent="." instance=ExtResource( 10 )]

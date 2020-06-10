@@ -12,13 +12,13 @@ var pathfinding_ref
 var player_ref
 var circles = []
 var attack_cooldown = 0
-var speed = 80
+var speed = 120
 const ATTACK_TIME = 1
 
 onready var Circle = preload("res://Scenes/Circle.tscn")
 	
 func init(tile_pos, pathfinding, player):
-		full_hp = 2
+		full_hp = 1
 		hp = full_hp
 		tile = tile_pos
 		position = tile * TILE_SIZE + Vector2(16, 16)
@@ -62,13 +62,11 @@ func update_self(delta):
 			
 			velocity = move_and_slide(velocity)
 			tile = Vector2(int(position.x / TILE_SIZE), int(position.y / TILE_SIZE))
-			
-			#draw_path()
 		else:
 			if attack_cooldown == 0:
 				var vector_to_player = player_ref.position - position
 				if vector_to_player.length() < 32:
-					player_ref.damage(1)
+					player_ref.damage(0.5)
 					attack_cooldown = ATTACK_TIME
 				else:
 					vector_to_player = move_and_slide(vector_to_player.normalized() * speed)

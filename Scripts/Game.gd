@@ -15,6 +15,8 @@ const LEVEL_ENEMY_COUNTS = [ 5, 8, 12, 18, 26 ]
 const LEVEL_ITEM_COUNTS = [ 3, 6, 12, 15, 20 ]
 
 const EnemyScene = preload("res://Scenes/Enemy.tscn")
+const DuckEnemyScene = preload("res://Scenes/DuckEnemy.tscn")
+const CrabEnemyScene = preload("res://Scenes/CrabEnemy.tscn")
 
 # Current level -----------------------------------------------
 
@@ -45,10 +47,19 @@ func _input(event):
 			game_paused = true
 			$CanvasLayer/PauseMenu.appear()
 			return
+		
+		player.input(event)
 
 func _process(_delta):
 	$CanvasLayer/HP.text = "HP: " + str(round(player.hp))
 	$CanvasLayer/Score.text = "Score: " + str(player.score)
+
+func _physics_process(delta):
+	if !game_paused:
+		player.update_self(delta)
+		
+		for enemy in enemies:
+			enemy.update_self(delta)
 
 func next_level():
 	
@@ -76,18 +87,29 @@ func next_level():
 	var enemy_spawns = level.get_enemy_spawn_points()
 	
 	for position in enemy_spawns:
-		var enemy = EnemyScene.instance()
-		enemy.init(randi() % 2, position, enemy_pathfinding, player)
-		enemy.connect("died", self, "_on_Enemy_died", [enemy])
-		add_child(enemy)
-		enemies.append(enemy)
+		spawn_enemy(position)
 	
 	$CanvasLayer/Level.text = "Level: " + str(level_num)
 	
 	call_deferred("level_generated_true")
-	#level_generated = true
 	
 	call_deferred("update_visuals")
+
+func spawn_enemy(position):
+	var enemy_type = randi() % 3
+	var enemy
+	
+	if enemy_type == 0:
+		enemy = EnemyScene.instance()
+	elif enemy_type == 1:
+		enemy = DuckEnemyScene.instance()
+	else:
+		enemy = CrabEnemyScene.instance()
+		
+	enemy.init(position, enemy_pathfinding, player)
+	enemy.connect("died", self, "_on_Enemy_died", [enemy])
+	add_child(enemy)
+	enemies.append(enemy)
 
 func level_generated_true():
 	level_generated = true

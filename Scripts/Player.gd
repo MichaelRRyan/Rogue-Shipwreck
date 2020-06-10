@@ -54,7 +54,7 @@ func set_tile(tile_pos):
 	position = tile * TILE_SIZE + Vector2(16, 16)
 
 # -------------------------------------------------------------
-func _input(event):
+func input(event):
 	if event.is_action_pressed("mouse_click"):
 		var mouse_tile = Vector2(int(get_global_mouse_position().x / TILE_SIZE), int(get_global_mouse_position().y / TILE_SIZE))
 		if level_ref.get_tile(mouse_tile.x, mouse_tile.y) == TileType.Door:
@@ -72,7 +72,7 @@ func _input(event):
 							body.take_damage(1)
 
 # -------------------------------------------------------------
-func _physics_process(delta):
+func update_self(delta):
 	
 	if attack_cooldown > 0:
 		attack_cooldown -= delta
